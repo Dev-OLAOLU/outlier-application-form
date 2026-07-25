@@ -5,3 +5,6 @@ node_modules/
 google-apps-script/_deploy_meta.json
 .clasp.json
 package-lock.json
+.vercel
+FINISH_OPTION_B.sh
+*.textClipping

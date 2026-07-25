@@ -1,46 +1,87 @@
-APPLICATION WEBSITE — NO GOOGLE NEEDED
-======================================
+RECRUITMENT APPLICATION WEBSITE + EMAIL FORM
+============================================
 
-HOW TO OPEN (important)
------------------------
-1. Double-click:  start-server.command
-2. Browser opens: http://localhost:8080/
-3. Click Apply → fill form → Submit
+GitHub: https://github.com/Dev-OLAOLU/outlier-application-form
 
-Do NOT open HTML files by double-clicking them.
-Email delivery only works when the site runs on http://localhost.
+WHAT THIS IS
+------------
+• Interactive landing page (index.html)
+• Short application form (apply.html)
+• Thank-you page (thank-you.html)
+• Form data emailed to: davidayantoyinbo@gmail.com (FormSubmit)
 
-WHERE DATA GOES
----------------
-davidayantoyinbo@gmail.com  (via FormSubmit — no Google Apps Script)
-
-FIRST TIME ONLY
----------------
-1. Start the server and submit a TEST application
-2. Open davidayantoyinbo@gmail.com
-3. Check Inbox + Spam for email from FormSubmit
-4. Click the confirmation / activation link once
-5. After that, every real application arrives in Gmail
-
-PAGES
------
-index.html              Landing page
-apply.html              Application form
-thank-you.html          Success message
-start-server.command    Double-click to run the site
-config.js               Email address setting
-
-ELIGIBILITY
------------
-USA / UK / Canada only · Students or adults · Valid government ID
+ELIGIBILITY (shown on site)
+---------------------------
+• USA, UK, or Canada residents only
+• Students or adults
+• Valid government-issued ID required
 
 FORM FIELDS
 -----------
-Full Name, Country, WhatsApp, iMessage, Telegram, Email (optional)
+• Full Name *
+• Country (USA / UK / Canada) *
+• WhatsApp Number *
+• iMessage Number *
+• Telegram Username/Number *
+• Email (optional)
 
 SUCCESS MESSAGE
 ---------------
 “A message would be sent out to you in a short while.”
 
-Google Option B was skipped (blocked). This FormSubmit + local server path replaces it.
-EOF
+
+============================================
+HOST ON VERCEL (recommended for domain)
+============================================
+
+Option 1 — Import from GitHub (easiest)
+1. Go to https://vercel.com and sign in (GitHub login is fine)
+2. Click “Add New…” → “Project”
+3. Import: Dev-OLAOLU/outlier-application-form
+4. Framework Preset: Other (static HTML)
+5. Root Directory: ./
+6. Build Command: leave empty
+7. Output Directory: leave empty / .
+8. Click Deploy
+9. Copy your URL, e.g. https://outlier-application-form.vercel.app
+
+Option 2 — Vercel CLI
+  npm i -g vercel
+  cd Desktop/OUTLIER
+  vercel login
+  vercel
+  vercel --prod
+
+Custom domain (Vercel dashboard)
+1. Project → Settings → Domains
+2. Add your domain (e.g. apply.yourdomain.com)
+3. Follow DNS instructions Vercel shows
+4. Wait for SSL (automatic)
+
+
+FIRST EMAIL ACTIVATION (once, after Vercel is live)
+---------------------------------------------------
+1. Open your Vercel URL → Apply form
+2. Submit a TEST application
+3. Open davidayantoyinbo@gmail.com (Inbox + Spam)
+4. Confirm FormSubmit activation email
+5. After that, all real submissions go to Gmail
+
+
+LOCAL TESTING
+-------------
+Double-click start-server.command
+Open http://localhost:8080/
+
+Do NOT open HTML files with file:// or email will fail.
+
+
+FILES
+-----
+index.html           Landing page
+apply.html           Application form → emails Gmail
+thank-you.html       Success page
+vercel.json          Vercel static hosting config
+config.js            Email destination
+start-server.command Local server helper
+README.txt           This file

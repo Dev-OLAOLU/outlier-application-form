@@ -1,16 +1,10 @@
 {
-  "name": "outlier",
+  "name": "outlier-application-form",
   "version": "1.0.0",
-  "description": "",
-  "main": "config.js",
+  "private": true,
+  "description": "Recruitment application website with email form — hosted on Vercel",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "devDependencies": {
-    "@google/clasp": "^3.3.0"
+    "start": "python3 -m http.server 8080",
+    "dev": "python3 -m http.server 8080"
   }
 }
