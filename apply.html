@@ -81,6 +81,7 @@
     input:focus, select:focus {
       border-color: rgba(52,211,153,.55); box-shadow: 0 0 0 3px rgba(52,211,153,.12);
     }
+    select option, select optgroup { color: #111; background: #fff; }
     .hint { margin-top: .3rem; color: var(--muted); font-size: .75rem; }
 
     .check {
@@ -116,13 +117,23 @@
     .warn-file code {
       display: block; margin-top: .4rem; color: #fde68a; font-size: .8rem;
     }
+
+    .success {
+      display: none;
+      text-align: center;
+      padding: 1.5rem 0.5rem 0.5rem;
+    }
+    .success.show { display: block; }
+    .success h3 { margin: 0 0 .5rem; font-size: 1.25rem; }
+    .success p { margin: 0 0 .75rem; color: var(--muted); }
+    .success a { color: #93c5fd; }
   </style>
 </head>
 <body>
   <div class="wrap">
     <div class="top">
       <a href="index.html">← Back to home</a>
-      <span style="color:#6b7280;font-size:.8rem;">Email submit</span>
+      <span style="color:#6b7280;font-size:.8rem;">Secure submit</span>
     </div>
 
     <header class="hero">
@@ -132,14 +143,15 @@
 
     <div class="warn-file" id="fileWarn">
       <strong>Open this site the right way</strong>
-      <div>Do not open the HTML file directly. Use your <strong>Vercel domain</strong> (e.g. https://your-app.vercel.app) or double-click <strong>start-server.command</strong> for local testing:</div>
+      <div>Use your Vercel domain, or run the local server:</div>
+      <code>node server.mjs</code>
       <code>http://localhost:8080/apply.html</code>
     </div>
 
     <div class="rules">
       <strong>Eligibility</strong>
       <ul>
-        <li>Only residents of the <strong style="color:#e5e7eb">USA, UK, or Canada</strong></li>
+        <li>Residents of <strong style="color:#e5e7eb">Tier 1 or Tier 2</strong> countries only</li>
         <li>Students or adults</li>
         <li>Must have a valid government-issued ID</li>
       </ul>
@@ -152,15 +164,7 @@
     <main class="card">
       <div class="card-head"><h2>Your details</h2></div>
       <div class="card-body">
-        <!-- Native POST to FormSubmit → davidayantoyinbo@gmail.com (no Google) -->
-        <form id="recruitForm" action="https://formsubmit.co/davidayantoyinbo@gmail.com" method="POST">
-          <!-- FormSubmit controls -->
-          <input type="hidden" name="_subject" value="New referral application (USA/UK/Canada)" />
-          <input type="hidden" name="_template" value="table" />
-          <input type="hidden" name="_captcha" value="false" />
-          <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
-          <input type="hidden" name="_next" id="nextUrl" value="" />
-
+        <form id="recruitForm" novalidate>
           <div class="field">
             <label for="fullName">Full Name <span class="req">*</span></label>
             <input id="fullName" name="fullName" type="text" autocomplete="name" required placeholder="As on your ID" />
@@ -170,11 +174,75 @@
             <label for="country">Country <span class="req">*</span></label>
             <select id="country" name="country" required>
               <option value="">Select country…</option>
-              <option value="USA">USA</option>
-              <option value="UK">UK</option>
-              <option value="Canada">Canada</option>
+              <optgroup label="Tier 1">
+                <option value="USA" data-tier="Tier 1">United States (USA)</option>
+                <option value="UK" data-tier="Tier 1">United Kingdom (UK)</option>
+                <option value="Canada" data-tier="Tier 1">Canada</option>
+                <option value="Australia" data-tier="Tier 1">Australia</option>
+                <option value="New Zealand" data-tier="Tier 1">New Zealand</option>
+                <option value="Ireland" data-tier="Tier 1">Ireland</option>
+                <option value="Germany" data-tier="Tier 1">Germany</option>
+                <option value="France" data-tier="Tier 1">France</option>
+                <option value="Netherlands" data-tier="Tier 1">Netherlands</option>
+                <option value="Switzerland" data-tier="Tier 1">Switzerland</option>
+                <option value="Austria" data-tier="Tier 1">Austria</option>
+                <option value="Belgium" data-tier="Tier 1">Belgium</option>
+                <option value="Sweden" data-tier="Tier 1">Sweden</option>
+                <option value="Norway" data-tier="Tier 1">Norway</option>
+                <option value="Denmark" data-tier="Tier 1">Denmark</option>
+                <option value="Finland" data-tier="Tier 1">Finland</option>
+                <option value="Luxembourg" data-tier="Tier 1">Luxembourg</option>
+                <option value="Iceland" data-tier="Tier 1">Iceland</option>
+                <option value="Singapore" data-tier="Tier 1">Singapore</option>
+                <option value="Japan" data-tier="Tier 1">Japan</option>
+                <option value="South Korea" data-tier="Tier 1">South Korea</option>
+                <option value="Israel" data-tier="Tier 1">Israel</option>
+                <option value="United Arab Emirates" data-tier="Tier 1">United Arab Emirates</option>
+                <option value="Hong Kong" data-tier="Tier 1">Hong Kong</option>
+                <option value="Taiwan" data-tier="Tier 1">Taiwan</option>
+              </optgroup>
+              <optgroup label="Tier 2">
+                <option value="Spain" data-tier="Tier 2">Spain</option>
+                <option value="Italy" data-tier="Tier 2">Italy</option>
+                <option value="Portugal" data-tier="Tier 2">Portugal</option>
+                <option value="Poland" data-tier="Tier 2">Poland</option>
+                <option value="Czech Republic" data-tier="Tier 2">Czech Republic</option>
+                <option value="Greece" data-tier="Tier 2">Greece</option>
+                <option value="Romania" data-tier="Tier 2">Romania</option>
+                <option value="Hungary" data-tier="Tier 2">Hungary</option>
+                <option value="Croatia" data-tier="Tier 2">Croatia</option>
+                <option value="Slovakia" data-tier="Tier 2">Slovakia</option>
+                <option value="Slovenia" data-tier="Tier 2">Slovenia</option>
+                <option value="Bulgaria" data-tier="Tier 2">Bulgaria</option>
+                <option value="Estonia" data-tier="Tier 2">Estonia</option>
+                <option value="Latvia" data-tier="Tier 2">Latvia</option>
+                <option value="Lithuania" data-tier="Tier 2">Lithuania</option>
+                <option value="Brazil" data-tier="Tier 2">Brazil</option>
+                <option value="Mexico" data-tier="Tier 2">Mexico</option>
+                <option value="Argentina" data-tier="Tier 2">Argentina</option>
+                <option value="Chile" data-tier="Tier 2">Chile</option>
+                <option value="Colombia" data-tier="Tier 2">Colombia</option>
+                <option value="Peru" data-tier="Tier 2">Peru</option>
+                <option value="India" data-tier="Tier 2">India</option>
+                <option value="Philippines" data-tier="Tier 2">Philippines</option>
+                <option value="Indonesia" data-tier="Tier 2">Indonesia</option>
+                <option value="Malaysia" data-tier="Tier 2">Malaysia</option>
+                <option value="Thailand" data-tier="Tier 2">Thailand</option>
+                <option value="Vietnam" data-tier="Tier 2">Vietnam</option>
+                <option value="South Africa" data-tier="Tier 2">South Africa</option>
+                <option value="Turkey" data-tier="Tier 2">Turkey</option>
+                <option value="Ukraine" data-tier="Tier 2">Ukraine</option>
+                <option value="Serbia" data-tier="Tier 2">Serbia</option>
+                <option value="Nigeria" data-tier="Tier 2">Nigeria</option>
+                <option value="Kenya" data-tier="Tier 2">Kenya</option>
+                <option value="Ghana" data-tier="Tier 2">Ghana</option>
+                <option value="Egypt" data-tier="Tier 2">Egypt</option>
+                <option value="Morocco" data-tier="Tier 2">Morocco</option>
+                <option value="Pakistan" data-tier="Tier 2">Pakistan</option>
+                <option value="Bangladesh" data-tier="Tier 2">Bangladesh</option>
+              </optgroup>
             </select>
-            <div class="hint">Only USA, UK, or Canada.</div>
+            <div class="hint">Select your country of residence (Tier 1 or Tier 2).</div>
           </div>
 
           <div class="field">
@@ -198,68 +266,112 @@
           </div>
 
           <div class="check">
-            <input id="eligible" name="eligibleConfirm" type="checkbox" value="yes" required />
+            <input id="eligible" type="checkbox" required />
             <label for="eligible">
-              I confirm I live in the USA, UK, or Canada, I am a student or adult, and I have a valid government-issued ID. <span class="req">*</span>
+              I confirm I live in a Tier 1 or Tier 2 country, I am a student or adult, and I have a valid government-issued ID. <span class="req">*</span>
             </label>
           </div>
 
           <div class="check">
-            <input id="serious" name="seriousConfirm" type="checkbox" value="yes" required />
+            <input id="serious" type="checkbox" required />
             <label for="serious">
               I am a serious applicant who wants to earn through the referral link, and I understand a valid ID will be required during verification. <span class="req">*</span>
             </label>
           </div>
 
           <button type="submit" class="btn" id="submitBtn">Submit application</button>
-          <p class="status" id="statusMsg">
-            Submissions go to <strong style="color:#d1d5db">davidayantoyinbo@gmail.com</strong>.
-          </p>
+          <p class="status" id="statusMsg">Your information will be submitted securely.</p>
         </form>
+
+        <div class="success" id="successBox" role="status" aria-live="polite">
+          <h3>Application submitted successfully</h3>
+          <p>Thanks, <span id="successName">there</span>. A message would be sent out to you in a short while.</p>
+          <p><a href="index.html">← Back to home</a></p>
+        </div>
       </div>
     </main>
   </div>
 
   <script>
     (function () {
-      // Prefill country from landing page
+      var form = document.getElementById("recruitForm");
+      var submitBtn = document.getElementById("submitBtn");
+      var statusMsg = document.getElementById("statusMsg");
+      var successBox = document.getElementById("successBox");
+      var successName = document.getElementById("successName");
+      var countryEl = document.getElementById("country");
+
       try {
         var pref = localStorage.getItem("pref_country");
-        if (pref && document.getElementById("country").querySelector('option[value="' + pref + '"]')) {
-          document.getElementById("country").value = pref;
+        if (pref && countryEl.querySelector('option[value="' + pref + '"]')) {
+          countryEl.value = pref;
         }
       } catch (e) {}
 
-      // After FormSubmit processes, return to our thank-you page
-      var next = document.getElementById("nextUrl");
-      next.value = window.location.origin + window.location.pathname.replace(/[^/]*$/, "") + "thank-you.html";
-
-      // Warn if opened as file:// (FormSubmit blocks this)
       if (location.protocol === "file:") {
         document.getElementById("fileWarn").classList.add("show");
-        document.getElementById("statusMsg").innerHTML =
-          "<span style=\"color:#f87171\">Email will not work from a local file.</span> " +
-          "Double-click <strong>start-server.command</strong> first.";
+        statusMsg.innerHTML =
+          "Use your live site URL or run <strong>node server.mjs</strong> (not a direct HTML file).";
       }
 
-      // Set reply-to when optional email filled
-      var form = document.getElementById("recruitForm");
-      form.addEventListener("submit", function () {
-        var email = (document.getElementById("email").value || "").trim();
-        var existing = form.querySelector('input[name="_replyto"]');
-        if (email) {
-          if (!existing) {
-            existing = document.createElement("input");
-            existing.type = "hidden";
-            existing.name = "_replyto";
-            form.appendChild(existing);
+      function val(id) {
+        return (document.getElementById(id).value || "").trim();
+      }
+
+      function selectedTier() {
+        var opt = countryEl.options[countryEl.selectedIndex];
+        return (opt && opt.getAttribute("data-tier")) || "";
+      }
+
+      form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+        if (!form.reportValidity()) return;
+
+        var payload = {
+          fullName: val("fullName"),
+          country: val("country"),
+          countryTier: selectedTier(),
+          whatsapp: val("whatsapp"),
+          imessage: val("imessage"),
+          telegram: val("telegram"),
+          email: val("email") || "—",
+          eligibilityConfirm: "yes",
+          seriousConfirm: "yes",
+          submittedAt: new Date().toISOString(),
+          _subject: "New referral application (" + (selectedTier() || "Tier") + ")",
+        };
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Sending…";
+        statusMsg.textContent = "Submitting your application…";
+
+        try {
+          var res = await fetch("/api/submit", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", Accept: "application/json" },
+            body: JSON.stringify(payload),
+          });
+          var data = await res.json().catch(function () { return {}; });
+          if (!res.ok || data.ok === false) {
+            throw new Error(data.message || ("Submit failed (" + res.status + ")"));
           }
-          existing.value = email;
-        } else if (existing) {
-          existing.remove();
+
+          successName.textContent = payload.fullName.split(" ")[0] || "there";
+          form.style.display = "none";
+          successBox.classList.add("show");
+          // Also land on dedicated page for clean URL shares
+          setTimeout(function () {
+            window.location.href = "thank-you.html";
+          }, 1200);
+        } catch (err) {
+          console.error(err);
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Submit application";
+          statusMsg.innerHTML =
+            "<span style=\"color:#f87171\">Could not submit: " +
+            (err && err.message ? err.message : "network error") +
+            ".</span> If this is production, ensure the site is deployed on Vercel. For local use, run <code style=\"color:#fde68a\">node server.mjs</code>.";
         }
-        document.getElementById("submitBtn").disabled = true;
-        document.getElementById("submitBtn").textContent = "Sending…";
       });
     })();
   </script>

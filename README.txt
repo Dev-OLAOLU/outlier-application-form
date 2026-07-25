@@ -1,87 +1,56 @@
-RECRUITMENT APPLICATION WEBSITE + EMAIL FORM
-============================================
+RECRUITMENT APPLICATION WEBSITE + PRIVATE EMAIL FORM
+====================================================
 
 GitHub: https://github.com/Dev-OLAOLU/outlier-application-form
 
-WHAT THIS IS
-------------
-• Interactive landing page (index.html)
-• Short application form (apply.html)
-• Thank-you page (thank-you.html)
-• Form data emailed to: davidayantoyinbo@gmail.com (FormSubmit)
+WHAT USERS SEE
+--------------
+• Landing page + application form + thank-you page
+• Your personal Gmail is NOT shown on the website
+• Submissions are posted to /api/submit (server-side only)
 
-ELIGIBILITY (shown on site)
----------------------------
-• USA, UK, or Canada residents only
-• Students or adults
-• Valid government-issued ID required
+WHERE EMAIL GOES (hidden from users)
+------------------------------------
+davidayantoyinbo@gmail.com
+Set on the server in:
+  api/submit.js   (Vercel)
+  server.mjs      (local)
+Optional Vercel env: FORM_TO_EMAIL
 
-FORM FIELDS
------------
-• Full Name *
-• Country (USA / UK / Canada) *
-• WhatsApp Number *
-• iMessage Number *
-• Telegram Username/Number *
-• Email (optional)
+COUNTRIES
+---------
+Dropdown grouped as:
+  Tier 1 — USA, UK, Canada, Australia, NZ, Ireland, Western Europe, SG, JP, KR, IL, UAE, HK, TW...
+  Tier 2 — Spain, Italy, Poland, Brazil, Mexico, India, Nigeria, PH, and more
 
-SUCCESS MESSAGE
----------------
+FIELDS
+------
+Full Name *, Country (T1/T2) *, WhatsApp *, iMessage *, Telegram *, Email (optional)
+
+SUCCESS
+-------
 “A message would be sent out to you in a short while.”
 
 
-============================================
-HOST ON VERCEL (recommended for domain)
-============================================
-
-Option 1 — Import from GitHub (easiest)
-1. Go to https://vercel.com and sign in (GitHub login is fine)
-2. Click “Add New…” → “Project”
-3. Import: Dev-OLAOLU/outlier-application-form
-4. Framework Preset: Other (static HTML)
-5. Root Directory: ./
-6. Build Command: leave empty
-7. Output Directory: leave empty / .
-8. Click Deploy
-9. Copy your URL, e.g. https://outlier-application-form.vercel.app
-
-Option 2 — Vercel CLI
-  npm i -g vercel
-  cd Desktop/OUTLIER
-  vercel login
-  vercel
-  vercel --prod
-
-Custom domain (Vercel dashboard)
-1. Project → Settings → Domains
-2. Add your domain (e.g. apply.yourdomain.com)
-3. Follow DNS instructions Vercel shows
-4. Wait for SSL (automatic)
+VERCEL HOSTING
+--------------
+1. Import GitHub repo on vercel.com
+2. Framework: Other / no build command
+3. Deploy
+4. Optional: Project → Settings → Environment Variables
+     FORM_TO_EMAIL = davidayantoyinbo@gmail.com
+5. Open your Vercel URL → submit a TEST form
+6. Confirm FormSubmit activation email in Gmail once (Inbox/Spam)
 
 
-FIRST EMAIL ACTIVATION (once, after Vercel is live)
----------------------------------------------------
-1. Open your Vercel URL → Apply form
-2. Submit a TEST application
-3. Open davidayantoyinbo@gmail.com (Inbox + Spam)
-4. Confirm FormSubmit activation email
-5. After that, all real submissions go to Gmail
-
-
-LOCAL TESTING
--------------
+LOCAL
+-----
 Double-click start-server.command
+  or:  node server.mjs
 Open http://localhost:8080/
 
-Do NOT open HTML files with file:// or email will fail.
 
-
-FILES
------
-index.html           Landing page
-apply.html           Application form → emails Gmail
-thank-you.html       Success page
-vercel.json          Vercel static hosting config
-config.js            Email destination
-start-server.command Local server helper
-README.txt           This file
+FIRST FORM EMAIL ACTIVATION
+---------------------------
+First successful delivery may require confirming FormSubmit in Gmail.
+After that, every application hits your inbox automatically.

@@ -1,22 +1,22 @@
 #!/bin/bash
-# Double-click this file to open the application website correctly.
-# Form email delivery only works over http:// (not by double-clicking HTML files).
-
 cd "$(dirname "$0")"
 PORT=8080
 
 echo "============================================"
-echo "  Application website"
+echo "  Application website (local)"
 echo "  Open: http://localhost:$PORT/"
-echo "  Email: davidayantoyinbo@gmail.com"
+echo "  Form emails are sent privately (not shown on page)"
 echo "============================================"
 echo ""
-echo "Keep this window open while you use the form."
-echo "Press Ctrl+C to stop the server."
+echo "Keep this window open. Press Ctrl+C to stop."
 echo ""
 
-# Open browser after a short delay
 (sleep 1 && open "http://localhost:$PORT/") &
 
-# Serve this folder
-python3 -m http.server "$PORT"
+# Prefer Node server (includes /api/submit). Fallback: plain static only.
+if command -v node >/dev/null 2>&1; then
+  node server.mjs
+else
+  echo "Node not found — starting static server only (email API needs Node or Vercel)."
+  python3 -m http.server "$PORT"
+fi

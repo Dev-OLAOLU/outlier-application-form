@@ -1,7 +1,5 @@
-// Email destination — all form submissions go here
-var DESTINATION_EMAIL = "davidayantoyinbo@gmail.com";
-
-// FormSubmit endpoint (no Google required)
-// Works on Vercel (https://your-project.vercel.app) and local http://localhost:8080
-// Does NOT work if you open HTML files directly (file://)
-var FORMSUBMIT_ACTION = "https://formsubmit.co/" + DESTINATION_EMAIL;
+// Public site config only — do NOT put private email addresses here.
+// Destination email lives only in:
+//   - api/submit.js (Vercel serverless, server-side)
+//   - server.mjs (local Node server, server-side)
+//   - Vercel env var FORM_TO_EMAIL (optional override)
