@@ -1,0 +1,7 @@
+node_modules/
+.DS_Store
+*.log
+.clasprc.json
+google-apps-script/_deploy_meta.json
+.clasp.json
+package-lock.json

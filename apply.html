@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Application Form</title>
+  <style>
+    :root {
+      --bg: #07080c;
+      --bg-card: #12141b;
+      --bg-input: #1a1d26;
+      --border: #2a2f3a;
+      --text: #f3f4f6;
+      --muted: #9ca3af;
+      --accent: #34d399;
+      --accent-dark: #059669;
+      --danger: #f87171;
+      --warn-bg: rgba(251, 191, 36, .08);
+      --warn-border: rgba(251, 191, 36, .35);
+      --warn-text: #fcd34d;
+      --shadow: 0 20px 50px rgba(0,0,0,.45);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(1000px 500px at 10% -10%, rgba(96,165,250,.14), transparent 55%),
+        radial-gradient(800px 420px at 100% 0%, rgba(52,211,153,.10), transparent 50%),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+    .wrap { width: min(560px, calc(100% - 2rem)); margin: 0 auto; padding: 1.25rem 0 3rem; }
+    .top {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1rem; font-size: .9rem;
+    }
+    .top a { color: #93c5fd; text-decoration: none; }
+    .top a:hover { text-decoration: underline; }
+
+    .hero { text-align: center; margin-bottom: 1rem; }
+    h1 { font-size: clamp(1.4rem, 4vw, 1.75rem); margin: 0 0 .4rem; letter-spacing: -.02em; }
+    .lead { margin: 0; color: var(--muted); font-size: .95rem; }
+
+    .rules, .note {
+      border-radius: 12px; padding: .9rem 1rem; font-size: .88rem; margin-bottom: .85rem;
+    }
+    .rules {
+      border: 1px solid var(--border); background: rgba(255,255,255,.03); color: var(--muted);
+    }
+    .rules strong {
+      display: block; color: #e5e7eb; margin-bottom: .35rem; font-size: .78rem;
+      text-transform: uppercase; letter-spacing: .04em;
+    }
+    .rules ul { margin: 0; padding-left: 1.1rem; }
+    .rules li { margin: .2rem 0; }
+    .note {
+      border: 1px solid var(--warn-border); background: var(--warn-bg); color: var(--warn-text);
+    }
+
+    .card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 16px; box-shadow: var(--shadow); overflow: hidden;
+    }
+    .card-head { padding: 1rem 1.2rem; border-bottom: 1px solid var(--border); }
+    .card-head h2 { margin: 0; font-size: 1.05rem; }
+    .card-body { padding: 1.2rem; }
+
+    .field { margin-bottom: 1rem; }
+    label {
+      display: block; font-size: .82rem; font-weight: 600; color: #d1d5db; margin-bottom: .4rem;
+    }
+    .req { color: var(--danger); }
+    .opt { font-weight: 500; color: var(--muted); font-size: .75rem; }
+    input, select {
+      width: 100%; border: 1px solid var(--border); background: var(--bg-input);
+      color: var(--text); border-radius: 10px; padding: .75rem .85rem; font: inherit; outline: none;
+    }
+    input:focus, select:focus {
+      border-color: rgba(52,211,153,.55); box-shadow: 0 0 0 3px rgba(52,211,153,.12);
+    }
+    .hint { margin-top: .3rem; color: var(--muted); font-size: .75rem; }
+
+    .check {
+      display: flex; gap: .65rem; align-items: flex-start;
+      padding: .85rem .95rem; border: 1px solid var(--border); border-radius: 12px;
+      background: rgba(255,255,255,.02); margin-bottom: .85rem;
+    }
+    .check input {
+      width: 1.05rem; height: 1.05rem; margin-top: .12rem;
+      accent-color: var(--accent-dark); flex-shrink: 0;
+    }
+    .check label { margin: 0; font-weight: 500; color: var(--muted); font-size: .88rem; }
+
+    .btn {
+      appearance: none; border: none; cursor: pointer; border-radius: 999px;
+      padding: .9rem 1.2rem; font-weight: 600; font-size: .95rem; width: 100%;
+      background: linear-gradient(135deg, #34d399, #059669); color: #04140d;
+    }
+    .btn:disabled { opacity: .7; cursor: wait; }
+    .status { margin-top: .85rem; text-align: center; color: var(--muted); font-size: .8rem; }
+
+    .warn-file {
+      display: none;
+      margin-bottom: 1rem;
+      padding: .85rem 1rem;
+      border-radius: 12px;
+      border: 1px solid rgba(248,113,113,.4);
+      background: rgba(248,113,113,.1);
+      color: #fecaca;
+      font-size: .88rem;
+    }
+    .warn-file.show { display: block; }
+    .warn-file code {
+      display: block; margin-top: .4rem; color: #fde68a; font-size: .8rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <a href="index.html">← Back to home</a>
+      <span style="color:#6b7280;font-size:.8rem;">Email submit</span>
+    </div>
+
+    <header class="hero">
+      <h1>Application form</h1>
+      <p class="lead">Short form for serious applicants only.</p>
+    </header>
+
+    <div class="warn-file" id="fileWarn">
+      <strong>Open this site the right way</strong>
+      <div>Do not open the HTML file directly. Double-click <strong>start-server.command</strong> in this folder, then use the form at:</div>
+      <code>http://localhost:8080/apply.html</code>
+    </div>
+
+    <div class="rules">
+      <strong>Eligibility</strong>
+      <ul>
+        <li>Only residents of the <strong style="color:#e5e7eb">USA, UK, or Canada</strong></li>
+        <li>Students or adults</li>
+        <li>Must have a valid government-issued ID</li>
+      </ul>
+    </div>
+
+    <div class="note">
+      Only serious applicants who want to earn through my referral link should fill this form. Valid ID will be required during verification.
+    </div>
+
+    <main class="card">
+      <div class="card-head"><h2>Your details</h2></div>
+      <div class="card-body">
+        <!-- Native POST to FormSubmit → davidayantoyinbo@gmail.com (no Google) -->
+        <form id="recruitForm" action="https://formsubmit.co/davidayantoyinbo@gmail.com" method="POST">
+          <!-- FormSubmit controls -->
+          <input type="hidden" name="_subject" value="New referral application (USA/UK/Canada)" />
+          <input type="hidden" name="_template" value="table" />
+          <input type="hidden" name="_captcha" value="false" />
+          <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
+          <input type="hidden" name="_next" id="nextUrl" value="" />
+
+          <div class="field">
+            <label for="fullName">Full Name <span class="req">*</span></label>
+            <input id="fullName" name="fullName" type="text" autocomplete="name" required placeholder="As on your ID" />
+          </div>
+
+          <div class="field">
+            <label for="country">Country <span class="req">*</span></label>
+            <select id="country" name="country" required>
+              <option value="">Select country…</option>
+              <option value="USA">USA</option>
+              <option value="UK">UK</option>
+              <option value="Canada">Canada</option>
+            </select>
+            <div class="hint">Only USA, UK, or Canada.</div>
+          </div>
+
+          <div class="field">
+            <label for="whatsapp">WhatsApp Number <span class="req">*</span></label>
+            <input id="whatsapp" name="whatsapp" type="tel" required placeholder="Include country code if possible" />
+          </div>
+
+          <div class="field">
+            <label for="imessage">iMessage Number <span class="req">*</span></label>
+            <input id="imessage" name="imessage" type="tel" required placeholder="Phone number used for iMessage" />
+          </div>
+
+          <div class="field">
+            <label for="telegram">Telegram Username / Number <span class="req">*</span></label>
+            <input id="telegram" name="telegram" type="text" required placeholder="@username or phone number" />
+          </div>
+
+          <div class="field">
+            <label for="email">Email <span class="opt">(optional)</span></label>
+            <input id="email" name="email" type="email" autocomplete="email" placeholder="you@email.com" />
+          </div>
+
+          <div class="check">
+            <input id="eligible" name="eligibleConfirm" type="checkbox" value="yes" required />
+            <label for="eligible">
+              I confirm I live in the USA, UK, or Canada, I am a student or adult, and I have a valid government-issued ID. <span class="req">*</span>
+            </label>
+          </div>
+
+          <div class="check">
+            <input id="serious" name="seriousConfirm" type="checkbox" value="yes" required />
+            <label for="serious">
+              I am a serious applicant who wants to earn through the referral link, and I understand a valid ID will be required during verification. <span class="req">*</span>
+            </label>
+          </div>
+
+          <button type="submit" class="btn" id="submitBtn">Submit application</button>
+          <p class="status" id="statusMsg">
+            Submissions go to <strong style="color:#d1d5db">davidayantoyinbo@gmail.com</strong>.
+          </p>
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      // Prefill country from landing page
+      try {
+        var pref = localStorage.getItem("pref_country");
+        if (pref && document.getElementById("country").querySelector('option[value="' + pref + '"]')) {
+          document.getElementById("country").value = pref;
+        }
+      } catch (e) {}
+
+      // After FormSubmit processes, return to our thank-you page
+      var next = document.getElementById("nextUrl");
+      next.value = window.location.origin + window.location.pathname.replace(/[^/]*$/, "") + "thank-you.html";
+
+      // Warn if opened as file:// (FormSubmit blocks this)
+      if (location.protocol === "file:") {
+        document.getElementById("fileWarn").classList.add("show");
+        document.getElementById("statusMsg").innerHTML =
+          "<span style=\"color:#f87171\">Email will not work from a local file.</span> " +
+          "Double-click <strong>start-server.command</strong> first.";
+      }
+
+      // Set reply-to when optional email filled
+      var form = document.getElementById("recruitForm");
+      form.addEventListener("submit", function () {
+        var email = (document.getElementById("email").value || "").trim();
+        var existing = form.querySelector('input[name="_replyto"]');
+        if (email) {
+          if (!existing) {
+            existing = document.createElement("input");
+            existing.type = "hidden";
+            existing.name = "_replyto";
+            form.appendChild(existing);
+          }
+          existing.value = email;
+        } else if (existing) {
+          existing.remove();
+        }
+        document.getElementById("submitBtn").disabled = true;
+        document.getElementById("submitBtn").textContent = "Sending…";
+      });
+    })();
+  </script>
+</body>
+</html>

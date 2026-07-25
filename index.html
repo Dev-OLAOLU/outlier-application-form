@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Earn Online — Apply Now</title>
+  <style>
+    :root {
+      --bg: #07080c;
+      --card: #12141b;
+      --border: #2a2f3a;
+      --text: #f3f4f6;
+      --muted: #9ca3af;
+      --green: #34d399;
+      --green-2: #059669;
+      --blue: #60a5fa;
+      --gold: #fbbf24;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .bg-glow {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background:
+        radial-gradient(800px 400px at 15% 10%, rgba(52,211,153,.18), transparent 60%),
+        radial-gradient(700px 380px at 90% 15%, rgba(96,165,250,.16), transparent 55%),
+        radial-gradient(600px 400px at 50% 100%, rgba(251,191,36,.08), transparent 50%);
+    }
+    .orb {
+      position: fixed; border-radius: 50%; filter: blur(40px); opacity: .35;
+      animation: float 10s ease-in-out infinite; pointer-events: none; z-index: 0;
+    }
+    .orb.a { width: 180px; height: 180px; background: #34d399; top: 12%; left: 8%; animation-delay: 0s; }
+    .orb.b { width: 140px; height: 140px; background: #60a5fa; top: 55%; right: 10%; animation-delay: -3s; }
+    .orb.c { width: 100px; height: 100px; background: #fbbf24; bottom: 10%; left: 40%; animation-delay: -6s; }
+    @keyframes float {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-22px) scale(1.05); }
+    }
+
+    .wrap { position: relative; z-index: 1; width: min(980px, calc(100% - 2rem)); margin: 0 auto; padding: 1.25rem 0 3rem; }
+
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .75rem 0 1.5rem;
+    }
+    .logo {
+      font-weight: 700; letter-spacing: -.02em; font-size: 1.05rem;
+      display: flex; align-items: center; gap: .5rem;
+    }
+    .logo i {
+      width: 28px; height: 28px; border-radius: 8px;
+      background: linear-gradient(135deg, var(--green), var(--blue));
+      display: grid; place-items: center; font-style: normal; font-size: .75rem; color: #04140d;
+    }
+    .nav-cta {
+      text-decoration: none; color: #04140d; font-weight: 600; font-size: .9rem;
+      background: linear-gradient(135deg, var(--green), var(--green-2));
+      padding: .6rem 1rem; border-radius: 999px;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(52,211,153,.25); }
+
+    .hero {
+      text-align: center; padding: 2.5rem 0 2rem;
+    }
+    .pill {
+      display: inline-flex; align-items: center; gap: .4rem;
+      border: 1px solid var(--border); background: rgba(255,255,255,.03);
+      border-radius: 999px; padding: .35rem .8rem; color: var(--muted); font-size: .8rem;
+      margin-bottom: 1rem;
+    }
+    .pill b { color: var(--green); font-weight: 600; }
+    h1 {
+      font-size: clamp(2rem, 5.5vw, 3.2rem);
+      line-height: 1.08; margin: 0 0 .9rem; letter-spacing: -.03em;
+    }
+    h1 span {
+      background: linear-gradient(90deg, var(--green), var(--blue));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .sub {
+      color: var(--muted); max-width: 36rem; margin: 0 auto 1.5rem; font-size: 1.05rem;
+    }
+    .hero-actions {
+      display: flex; flex-wrap: wrap; gap: .75rem; justify-content: center; margin-bottom: 1.75rem;
+    }
+    .btn {
+      text-decoration: none; border: none; cursor: pointer; font: inherit; font-weight: 600;
+      border-radius: 999px; padding: .9rem 1.3rem; display: inline-flex; align-items: center; gap: .4rem;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--green), var(--green-2)); color: #04140d;
+      box-shadow: 0 10px 30px rgba(52,211,153,.2);
+    }
+    .btn-ghost {
+      background: transparent; color: var(--text); border: 1px solid var(--border);
+    }
+
+    .stats {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: .75rem; max-width: 520px; margin: 0 auto;
+    }
+    @media (max-width: 520px) { .stats { grid-template-columns: 1fr; } }
+    .stat {
+      border: 1px solid var(--border); border-radius: 14px; padding: .9rem;
+      background: rgba(255,255,255,.03);
+      transition: transform .2s ease, border-color .2s ease;
+    }
+    .stat:hover { transform: translateY(-3px); border-color: rgba(52,211,153,.4); }
+    .stat strong { display: block; font-size: 1.25rem; color: var(--green); }
+    .stat span { color: var(--muted); font-size: .82rem; }
+
+    section { margin-top: 3rem; }
+    .section-title {
+      text-align: center; font-size: 1.45rem; margin: 0 0 .4rem; letter-spacing: -.02em;
+    }
+    .section-sub {
+      text-align: center; color: var(--muted); margin: 0 0 1.25rem; font-size: .95rem;
+    }
+
+    .cards {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: .9rem;
+    }
+    @media (max-width: 760px) { .cards { grid-template-columns: 1fr; } }
+    .card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+      padding: 1.15rem; transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+      cursor: default;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(96,165,250,.35);
+      box-shadow: 0 16px 40px rgba(0,0,0,.35);
+    }
+    .icon {
+      width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center;
+      background: rgba(52,211,153,.12); color: var(--green); font-size: 1.1rem; margin-bottom: .75rem;
+    }
+    .card h3 { margin: 0 0 .35rem; font-size: 1.05rem; }
+    .card p { margin: 0; color: var(--muted); font-size: .9rem; }
+
+    .eligible {
+      display: grid; grid-template-columns: 1.1fr .9fr; gap: 1rem; align-items: stretch;
+    }
+    @media (max-width: 760px) { .eligible { grid-template-columns: 1fr; } }
+    .eligible-box {
+      background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 1.25rem;
+    }
+    .eligible-box h3 { margin: 0 0 .75rem; }
+    .eligible-box ul { margin: 0; padding-left: 1.1rem; color: var(--muted); }
+    .eligible-box li { margin: .35rem 0; }
+    .eligible-box li strong { color: #e5e7eb; }
+    .warn {
+      border: 1px solid rgba(251,191,36,.35);
+      background: rgba(251,191,36,.08);
+      color: #fcd34d;
+      border-radius: 16px;
+      padding: 1.25rem;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .warn h3 { margin: 0 0 .5rem; color: #fde68a; font-size: 1rem; }
+    .warn p { margin: 0; font-size: .92rem; line-height: 1.45; }
+
+    .steps {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: .75rem;
+    }
+    @media (max-width: 700px) { .steps { grid-template-columns: 1fr; } }
+    .step {
+      border: 1px solid var(--border); border-radius: 16px; padding: 1.1rem;
+      background: rgba(255,255,255,.03);
+      transition: background .2s ease, transform .2s ease;
+    }
+    .step:hover { background: rgba(255,255,255,.05); transform: translateY(-2px); }
+    .step .n {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--green), var(--blue));
+      color: #04140d; font-weight: 700; font-size: .85rem;
+      display: grid; place-items: center; margin-bottom: .6rem;
+    }
+    .step h4 { margin: 0 0 .3rem; font-size: .98rem; }
+    .step p { margin: 0; color: var(--muted); font-size: .88rem; }
+
+    .cta-band {
+      margin-top: 3rem;
+      border-radius: 20px;
+      padding: 2rem 1.25rem;
+      text-align: center;
+      border: 1px solid rgba(52,211,153,.25);
+      background:
+        linear-gradient(135deg, rgba(52,211,153,.12), rgba(96,165,250,.1));
+    }
+    .cta-band h2 { margin: 0 0 .5rem; font-size: clamp(1.35rem, 3vw, 1.8rem); }
+    .cta-band p { margin: 0 0 1.1rem; color: var(--muted); }
+
+    footer {
+      margin-top: 2.5rem; text-align: center; color: var(--muted); font-size: .8rem;
+    }
+
+    /* interactive country chips */
+    .chips { display: flex; flex-wrap: wrap; gap: .5rem; justify-content: center; margin-top: 1rem; }
+    .chip {
+      border: 1px solid var(--border); border-radius: 999px; padding: .45rem .85rem;
+      color: var(--muted); font-size: .85rem; cursor: pointer; user-select: none;
+      transition: all .15s ease; background: rgba(255,255,255,.02);
+    }
+    .chip:hover, .chip.active {
+      color: #04140d; background: linear-gradient(135deg, var(--green), var(--blue));
+      border-color: transparent; transform: scale(1.04);
+    }
+
+    .reveal {
+      opacity: 0; transform: translateY(18px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .reveal.show { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+  <div class="bg-glow"></div>
+  <div class="orb a"></div>
+  <div class="orb b"></div>
+  <div class="orb c"></div>
+
+  <div class="wrap">
+    <nav>
+      <div class="logo"><i>✦</i> Referral Apply</div>
+      <a class="nav-cta" href="apply.html">Start application →</a>
+    </nav>
+
+    <header class="hero">
+      <div class="pill"><b>Open now</b> · USA · UK · Canada only</div>
+      <h1>Ready to <span>earn online</span><br />through my referral?</h1>
+      <p class="sub">
+        Simple process. Short form. Serious applicants only.
+        If you qualify, apply in under a minute.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="apply.html">Apply now →</a>
+        <a class="btn btn-ghost" href="#eligibility">Check eligibility</a>
+      </div>
+      <div class="stats">
+        <div class="stat"><strong>3</strong><span>Countries accepted</span></div>
+        <div class="stat"><strong>1 min</strong><span>Average apply time</span></div>
+        <div class="stat"><strong>ID</strong><span>Required at verification</span></div>
+      </div>
+      <div class="chips" id="countryChips" aria-label="Accepted countries">
+        <button type="button" class="chip" data-c="USA">🇺🇸 USA</button>
+        <button type="button" class="chip" data-c="UK">🇬🇧 UK</button>
+        <button type="button" class="chip" data-c="Canada">🇨🇦 Canada</button>
+      </div>
+    </header>
+
+    <section class="reveal">
+      <h2 class="section-title">Why this opportunity</h2>
+      <p class="section-sub">Clear, flexible, and built for people who are ready to follow through.</p>
+      <div class="cards">
+        <article class="card">
+          <div class="icon">⏱</div>
+          <h3>Flexible timing</h3>
+          <p>Work around your schedule as a student or adult — no office required.</p>
+        </article>
+        <article class="card">
+          <div class="icon">💬</div>
+          <h3>Direct contact</h3>
+          <p>We collect WhatsApp, iMessage, and Telegram so onboarding is fast.</p>
+        </article>
+        <article class="card">
+          <div class="icon">✅</div>
+          <h3>Referral track</h3>
+          <p>Only serious applicants who want to earn through my referral link should apply.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="eligibility" class="reveal">
+      <h2 class="section-title">Eligibility</h2>
+      <p class="section-sub">Please read this before you open the form.</p>
+      <div class="eligible">
+        <div class="eligible-box">
+          <h3>You can apply if you are:</h3>
+          <ul>
+            <li>A resident of the <strong>USA, UK, or Canada</strong> only</li>
+            <li>A <strong>student or adult</strong></li>
+            <li>Able to show a <strong>valid government-issued ID</strong> during verification</li>
+          </ul>
+        </div>
+        <div class="warn">
+          <h3>Important note</h3>
+          <p>
+            Only serious applicants who want to earn through my referral link should fill this form.
+            Valid ID will be required during verification.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="reveal">
+      <h2 class="section-title">How it works</h2>
+      <p class="section-sub">Three simple steps from landing page to follow-up.</p>
+      <div class="steps">
+        <div class="step">
+          <div class="n">1</div>
+          <h4>Confirm you qualify</h4>
+          <p>USA, UK, or Canada · student or adult · valid ID available.</p>
+        </div>
+        <div class="step">
+          <div class="n">2</div>
+          <h4>Submit the short form</h4>
+          <p>Name, country, WhatsApp, iMessage, Telegram, and optional email.</p>
+        </div>
+        <div class="step">
+          <div class="n">3</div>
+          <h4>Wait for a message</h4>
+          <p>A message would be sent out to you in a short while after review.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="cta-band reveal">
+      <h2>Ready to apply?</h2>
+      <p>If you meet the requirements above, continue to the application form.</p>
+      <a class="btn btn-primary" href="apply.html" id="finalCta">Continue to application →</a>
+    </div>
+
+    <footer>
+      Applications are reviewed privately. Your form data is emailed for processing.
+    </footer>
+  </div>
+
+  <script>
+    // Interactive country chips → remember selection for apply page
+    (function () {
+      var chips = document.querySelectorAll(".chip");
+      chips.forEach(function (chip) {
+        chip.addEventListener("click", function () {
+          chips.forEach(function (c) { c.classList.remove("active"); });
+          chip.classList.add("active");
+          try {
+            localStorage.setItem("pref_country", chip.getAttribute("data-c"));
+          } catch (e) {}
+          // Soft pulse on main CTA
+          var cta = document.getElementById("finalCta");
+          cta.style.transform = "scale(1.04)";
+          setTimeout(function () { cta.style.transform = ""; }, 180);
+        });
+      });
+
+      // Reveal on scroll
+      var els = document.querySelectorAll(".reveal");
+      function check() {
+        var h = window.innerHeight;
+        els.forEach(function (el) {
+          var top = el.getBoundingClientRect().top;
+          if (top < h - 60) el.classList.add("show");
+        });
+      }
+      window.addEventListener("scroll", check, { passive: true });
+      check();
+    })();
+  </script>
+</body>
+</html>
