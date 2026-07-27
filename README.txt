@@ -5,9 +5,14 @@ GitHub: https://github.com/Dev-OLAOLU/outlier-application-form
 
 LIVE SITE (share this link)
 ---------------------------
-https://dev-olaolu.github.io/outlier-application-form/
-Application form:
-https://dev-olaolu.github.io/outlier-application-form/apply.html
+Custom domain (pending DNS approval, then live):
+  https://outlier-apply.is-cool.dev/
+  https://outlier-apply.is-cool.dev/apply.html
+
+GitHub Pages (works now):
+  https://dev-olaolu.github.io/outlier-application-form/
+  https://dev-olaolu.github.io/outlier-application-form/apply.html
+
 
 WHAT USERS SEE
 --------------
