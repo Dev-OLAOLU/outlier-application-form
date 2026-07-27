@@ -5,13 +5,14 @@ GitHub: https://github.com/Dev-OLAOLU/outlier-application-form
 
 LIVE SITE (share these links)
 -----------------------------
-Custom domain (after you finish Open Domains steps below):
-  https://wunna.is-cool.dev/
-  https://wunna.is-cool.dev/apply.html
-
-GitHub Pages (works now):
+Share this link now (works):
   https://dev-olaolu.github.io/outlier-application-form/
   https://dev-olaolu.github.io/outlier-application-form/apply.html
+
+Custom domain (after Open Domains DNS is approved, re-add CNAME file):
+  https://wunna.is-cool.dev/
+  https://wunna.is-cool.dev/apply.html
+  Intended hostname is saved in CUSTOM_DOMAIN.txt
 
 CUSTOM DOMAIN — wunna.is-cool.dev (do this once)
 ------------------------------------------------
