@@ -3,11 +3,17 @@ RECRUITMENT APPLICATION WEBSITE + PRIVATE EMAIL FORM
 
 GitHub: https://github.com/Dev-OLAOLU/outlier-application-form
 
+LIVE SITE (share this link)
+---------------------------
+https://dev-olaolu.github.io/outlier-application-form/
+Application form:
+https://dev-olaolu.github.io/outlier-application-form/apply.html
+
 WHAT USERS SEE
 --------------
 • Landing page + application form + thank-you page
-• Your personal Gmail is NOT shown on the website
-• Submissions are posted to /api/submit (server-side only)
+• On Vercel/local server: submissions go through /api/submit (email not on page)
+• On GitHub Pages (static): form uses FormSubmit so applications still reach Gmail
 
 WHERE EMAIL GOES (hidden from users)
 ------------------------------------
