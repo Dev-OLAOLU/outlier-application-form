@@ -10,7 +10,7 @@
  */
 
 const DEFAULT_TO = "davidayantoyinbo@gmail.com";
-const DEFAULT_ORIGIN = "https://outlier-application-form.vercel.app";
+const DEFAULT_ORIGIN = "https://wunna.is-cool.dev";
 
 function formSubmitOk(httpOk, data) {
   if (!httpOk) return false;
@@ -61,7 +61,7 @@ module.exports = async function handler(req, res) {
       eligibilityConfirm: body.eligibilityConfirm || "",
       seriousConfirm: body.seriousConfirm || "",
       submittedAt: body.submittedAt || new Date().toISOString(),
-      _subject: body._subject || "New referral application",
+      _subject: body._subject || "New Wunna application",
       _template: "table",
       _captcha: "false",
     };

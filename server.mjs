@@ -56,7 +56,7 @@ async function handleSubmit(req, res) {
     eligibilityConfirm: body.eligibilityConfirm || "",
     seriousConfirm: body.seriousConfirm || "",
     submittedAt: body.submittedAt || new Date().toISOString(),
-    _subject: body._subject || "New referral application",
+    _subject: body._subject || "New Wunna application",
     _template: "table",
     _captcha: "false",
   };

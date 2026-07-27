@@ -1,58 +1,52 @@
-RECRUITMENT APPLICATION WEBSITE + PRIVATE EMAIL FORM
-====================================================
+WUNNA — RECRUITMENT APPLICATION WEBSITE
+=======================================
 
 GitHub: https://github.com/Dev-OLAOLU/outlier-application-form
 
-LIVE SITE (share this link)
----------------------------
-Custom domain (pending DNS approval, then live):
-  https://outlier-apply.is-cool.dev/
-  https://outlier-apply.is-cool.dev/apply.html
+LIVE SITE (share these links)
+-----------------------------
+Custom domain (after you finish Open Domains steps below):
+  https://wunna.is-cool.dev/
+  https://wunna.is-cool.dev/apply.html
 
 GitHub Pages (works now):
   https://dev-olaolu.github.io/outlier-application-form/
   https://dev-olaolu.github.io/outlier-application-form/apply.html
 
+CUSTOM DOMAIN — wunna.is-cool.dev (do this once)
+------------------------------------------------
+You already created an Open Domains account with Gmail. The old
+device-code expired, so register the domain from the dashboard instead:
+
+1. Log in at: https://manage.open-domains.com/
+   (or https://opendomains.andrewstech.me/)
+
+2. Start a new subdomain request:
+   - Subdomain:   wunna
+   - Root domain: is-cool.dev
+   - Record type: CNAME
+   - Record value: dev-olaolu.github.io
+   - Proxied: OFF / false
+   - Reason: Wunna recruitment application form on GitHub Pages
+
+3. Submit and wait for approval (often minutes to a day).
+
+4. After DNS is approved, open:
+   https://wunna.is-cool.dev/
+   In GitHub → repo Settings → Pages → confirm custom domain
+   "wunna.is-cool.dev" and Enforce HTTPS.
 
 WHAT USERS SEE
 --------------
-• Landing page + application form + thank-you page
-• On Vercel/local server: submissions go through /api/submit (email not on page)
-• On GitHub Pages (static): form uses FormSubmit so applications still reach Gmail
+• Landing page + application form + thank-you page (branded Wunna)
+• On GitHub Pages: form uses FormSubmit so applications reach Gmail
+• On local/Vercel: submissions go through /api/submit
 
-WHERE EMAIL GOES (hidden from users)
-------------------------------------
+WHERE EMAIL GOES
+----------------
 davidayantoyinbo@gmail.com
-Set on the server in:
   api/submit.js   (Vercel)
   server.mjs      (local)
-Optional Vercel env: FORM_TO_EMAIL
-
-COUNTRIES
----------
-Dropdown grouped as:
-  Tier 1 — USA, UK, Canada, Australia, NZ, Ireland, Western Europe, SG, JP, KR, IL, UAE, HK, TW...
-  Tier 2 — Spain, Italy, Poland, Brazil, Mexico, India, Nigeria, PH, and more
-
-FIELDS
-------
-Full Name *, Country (T1/T2) *, WhatsApp *, iMessage *, Telegram *, Email (optional)
-
-SUCCESS
--------
-“A message would be sent out to you in a short while.”
-
-
-VERCEL HOSTING
---------------
-1. Import GitHub repo on vercel.com
-2. Framework: Other / no build command
-3. Deploy
-4. Optional: Project → Settings → Environment Variables
-     FORM_TO_EMAIL = davidayantoyinbo@gmail.com
-5. Open your Vercel URL → submit a TEST form
-6. Confirm FormSubmit activation email in Gmail once (Inbox/Spam)
-
 
 LOCAL
 -----
@@ -60,20 +54,7 @@ Double-click start-server.command
   or:  node server.mjs
 Open http://localhost:8080/
 
-
-FIRST FORM EMAIL ACTIVATION
----------------------------
-First successful delivery may require confirming FormSubmit in Gmail.
+FORM EMAIL ACTIVATION
+---------------------
+Confirm FormSubmit activation email in Gmail (Inbox/Spam) once.
 After that, every application hits your inbox automatically.
-
-IF YOU SEE "EMAIL DELIVERY FAILED"
-----------------------------------
-1. Do NOT open apply.html as a local file (file://). Use:
-     node server.mjs   →  http://localhost:8080/apply.html
-   or your live Vercel URL.
-2. Server must send Origin/Referer to FormSubmit (fixed in api/submit.js + server.mjs).
-3. Open Gmail for davidayantoyinbo@gmail.com → check Inbox AND Spam for an
-   email from FormSubmit titled like "Confirm your email" / activation link.
-   Click Confirm once.
-4. Redeploy to Vercel after pulling this fix, then submit a TEST application.
-5. Optional Vercel env: SITE_ORIGIN = your live https://….vercel.app URL

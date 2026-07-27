@@ -1,8 +1,8 @@
 {
-  "name": "outlier-application-form",
-  "version": "1.1.0",
+  "name": "wunna-application-form",
+  "version": "1.2.0",
   "private": true,
-  "description": "Recruitment application website with private email form — Vercel ready",
+  "description": "Wunna recruitment application website with private email form",
   "scripts": {
     "start": "node server.mjs",
     "dev": "node server.mjs"
