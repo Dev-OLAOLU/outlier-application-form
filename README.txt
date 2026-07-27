@@ -54,3 +54,15 @@ FIRST FORM EMAIL ACTIVATION
 ---------------------------
 First successful delivery may require confirming FormSubmit in Gmail.
 After that, every application hits your inbox automatically.
+
+IF YOU SEE "EMAIL DELIVERY FAILED"
+----------------------------------
+1. Do NOT open apply.html as a local file (file://). Use:
+     node server.mjs   →  http://localhost:8080/apply.html
+   or your live Vercel URL.
+2. Server must send Origin/Referer to FormSubmit (fixed in api/submit.js + server.mjs).
+3. Open Gmail for davidayantoyinbo@gmail.com → check Inbox AND Spam for an
+   email from FormSubmit titled like "Confirm your email" / activation link.
+   Click Confirm once.
+4. Redeploy to Vercel after pulling this fix, then submit a TEST application.
+5. Optional Vercel env: SITE_ORIGIN = your live https://….vercel.app URL

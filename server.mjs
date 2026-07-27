@@ -2,6 +2,8 @@
  * Local dev server: static files + /api/submit (email hidden from browser).
  * Usage: node server.mjs
  * Then open http://localhost:8080/
+ *
+ * FormSubmit requires Origin/Referer on server-side POSTs.
  */
 import http from "http";
 import fs from "fs";
@@ -24,6 +26,12 @@ const MIME = {
   ".txt": "text/plain; charset=utf-8",
   ".command": "text/plain; charset=utf-8",
 };
+
+function formSubmitOk(httpOk, data) {
+  if (!httpOk) return false;
+  if (data && (data.success === false || data.success === "false")) return false;
+  return true;
+}
 
 async function handleSubmit(req, res) {
   let raw = "";
@@ -56,22 +64,33 @@ async function handleSubmit(req, res) {
     payload._replyto = body.email;
   }
 
+  const originBase = `http://localhost:${PORT}`;
+
   try {
-    const r = await fetch(`https://formsubmit.co/ajax/${TO}`, {
+    const r = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(TO)}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
+        Origin: originBase,
+        Referer: `${originBase}/apply.html`,
       },
       body: JSON.stringify(payload),
     });
     const data = await r.json().catch(() => ({}));
-    res.writeHead(r.ok ? 200 : r.status, { "Content-Type": "application/json" });
+    const ok = formSubmitOk(r.ok, data);
+    res.writeHead(ok ? 200 : 502, { "Content-Type": "application/json" });
     res.end(
       JSON.stringify(
-        r.ok
+        ok
           ? { ok: true, message: "Submitted" }
-          : { ok: false, message: data.message || data.error || "Email delivery failed" }
+          : {
+              ok: false,
+              message:
+                data.message ||
+                data.error ||
+                "Email delivery failed. Confirm FormSubmit activation email in Gmail (Inbox/Spam).",
+            }
       )
     );
   } catch (err) {
