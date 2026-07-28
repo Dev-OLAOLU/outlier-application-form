@@ -1,15 +1,18 @@
 WUNNA — RECRUITMENT APPLICATION WEBSITE
 =======================================
 
-GitHub: https://github.com/Dev-OLAOLU/outlier-application-form
+GitHub: https://github.com/Dev-OLAOLU/applicationform
 
-SHARE THIS LINK (works on phones worldwide)
--------------------------------------------
+SHARE THESE LINKS (works on phones worldwide)
+---------------------------------------------
+Short link (main share — free TinyURL):
+  https://tinyurl.com/245kzhgr
+
+Apply form (full URL):
+  https://dev-olaolu.github.io/applicationform/apply.html
+
 Home:
-  https://dev-olaolu.github.io/outlier-application-form/
-
-Apply form (USE THIS):
-  https://dev-olaolu.github.io/outlier-application-form/apply.html
+  https://dev-olaolu.github.io/applicationform/
 
 Why not only wunna.is-cool.dev?
   Some mobile networks (especially LTE in some countries) cannot resolve
@@ -27,6 +30,8 @@ WHAT WAS FIXED (28 Jul 2026)
    - skip hanging /api/submit on static hosts
    - request timeouts
    - classic form POST fallback if fetch fails
+4. Repo renamed to applicationform (cleaner URL).
+5. Free short link: https://tinyurl.com/245kzhgr
 
 WHERE EMAIL GOES
 ----------------
