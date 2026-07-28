@@ -3,35 +3,25 @@ WUNNA — RECRUITMENT APPLICATION WEBSITE
 
 GitHub: https://github.com/Dev-OLAOLU/applicationform
 
-SHARE THESE LINKS (works on phones worldwide)
----------------------------------------------
-Short link (main share — opens HOME first):
-  https://da.gd/8nGZv
+SHARE THESE LINKS (real websites — not shorteners)
+--------------------------------------------------
+Main alternate website (HOME page — share this):
+  https://wunna-application-form.vercel.app/
 
-Home (full URL):
+Apply form on Vercel:
+  https://wunna-application-form.vercel.app/apply
+
+Backup (GitHub Pages home):
   https://dev-olaolu.github.io/applicationform/
 
-Apply form (full URL):
+Apply form on GitHub Pages:
   https://dev-olaolu.github.io/applicationform/apply.html
 
-Why not only wunna.is-cool.dev?
-  Some mobile networks (especially LTE in some countries) cannot resolve
-  free Open Domains hostnames → ERR_NAME_NOT_RESOLVED / Connection Error.
-  GitHub Pages (github.io) resolves reliably almost everywhere.
-
-  Optional custom domain (may fail on some phones):
-  https://wunna.is-cool.dev/
-
-WHAT WAS FIXED (28 Jul 2026)
-----------------------------
-1. Removed custom-domain redirect that forced phones onto broken DNS.
-2. Site is served primarily on github.io again.
-3. Form submit hardened for mobile / WhatsApp in-app browsers:
-   - skip hanging /api/submit on static hosts
-   - request timeouts
-   - classic form POST fallback if fetch fails
-4. Repo renamed to applicationform (cleaner URL).
-5. Free short link (home page): https://da.gd/8nGZv
+NOTE
+----
+• vercel.app and github.io are real hosted sites (not URL shorteners).
+• Avoid relying only on free is-cool.dev custom domains — some mobile
+  LTE networks cannot resolve them (ERR_NAME_NOT_RESOLVED).
 
 WHERE EMAIL GOES
 ----------------
