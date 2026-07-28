@@ -3,42 +3,37 @@ WUNNA — RECRUITMENT APPLICATION WEBSITE
 
 GitHub: https://github.com/Dev-OLAOLU/outlier-application-form
 
-LIVE SITE (share these links)
------------------------------
-Custom domain (primary):
-  https://wunna.is-cool.dev/
-  https://wunna.is-cool.dev/apply.html
-
-GitHub Pages (also works):
+SHARE THIS LINK (works on phones worldwide)
+-------------------------------------------
+Home:
   https://dev-olaolu.github.io/outlier-application-form/
+
+Apply form (USE THIS):
   https://dev-olaolu.github.io/outlier-application-form/apply.html
 
-CUSTOM DOMAIN SETUP (done)
---------------------------
-• Open Domains: wunna.is-cool.dev → CNAME dev-olaolu.github.io
-• Repo root file: CNAME
-• GitHub Pages custom domain: wunna.is-cool.dev
-• Enforce HTTPS in Pages settings when certificate is ready
+Why not only wunna.is-cool.dev?
+  Some mobile networks (especially LTE in some countries) cannot resolve
+  free Open Domains hostnames → ERR_NAME_NOT_RESOLVED / Connection Error.
+  GitHub Pages (github.io) resolves reliably almost everywhere.
 
-WHAT USERS SEE
---------------
-• Landing page + application form + thank-you page (branded Wunna)
-• On GitHub Pages: form uses FormSubmit so applications reach Gmail
-• On local/Vercel: submissions go through /api/submit
+  Optional custom domain (may fail on some phones):
+  https://wunna.is-cool.dev/
+
+WHAT WAS FIXED (28 Jul 2026)
+----------------------------
+1. Removed custom-domain redirect that forced phones onto broken DNS.
+2. Site is served primarily on github.io again.
+3. Form submit hardened for mobile / WhatsApp in-app browsers:
+   - skip hanging /api/submit on static hosts
+   - request timeouts
+   - classic form POST fallback if fetch fails
 
 WHERE EMAIL GOES
 ----------------
-davidayantoyinbo@gmail.com
-  api/submit.js   (Vercel)
-  server.mjs      (local)
+davidayantoyinbo@gmail.com via FormSubmit
 
-LOCAL
------
+LOCAL TEST
+----------
 Double-click start-server.command
   or:  node server.mjs
 Open http://localhost:8080/
-
-FORM EMAIL ACTIVATION
----------------------
-Confirm FormSubmit activation email in Gmail (Inbox/Spam) once.
-After that, every application hits your inbox automatically.

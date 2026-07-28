@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="format-detection" content="telephone=no" />
   <title>Wunna — Application Form</title>
-    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="favicon.png" type="image/png" sizes="32x32" />
   <link rel="apple-touch-icon" href="favicon.png" />
 <style>
@@ -266,17 +267,43 @@
         return (document.getElementById(id).value || "").trim();
       }
 
-      // Destination for static hosts (GitHub Pages). Same inbox as server-side path.
+      // Destination inbox (server-side path + FormSubmit)
       var FORM_TO = "davidayantoyinbo@gmail.com";
 
-      async function submitViaLocalApi(payload) {
-        var res = await fetch("/api/submit", {
-          method: "POST",
-          headers: { "Content-Type": "application/json", Accept: "application/json" },
-          body: JSON.stringify(payload),
+      function isStaticHost() {
+        var h = (location.hostname || "").toLowerCase();
+        return (
+          h.indexOf("github.io") !== -1 ||
+          h.indexOf("is-cool.dev") !== -1 ||
+          h.indexOf("pages.dev") !== -1 ||
+          h.indexOf("netlify.app") !== -1
+        );
+      }
+
+      function withTimeout(promise, ms) {
+        return new Promise(function (resolve, reject) {
+          var t = setTimeout(function () {
+            reject(new Error("Request timed out. Check your mobile data/Wi‑Fi and try again."));
+          }, ms);
+          promise.then(
+            function (v) { clearTimeout(t); resolve(v); },
+            function (e) { clearTimeout(t); reject(e); }
+          );
         });
+      }
+
+      async function submitViaLocalApi(payload) {
+        // Skip API on static hosts — WhatsApp/mobile browsers hang on HTML 404 responses
+        if (isStaticHost()) return { kind: "unavailable" };
+        var res = await withTimeout(
+          fetch("/api/submit", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", Accept: "application/json" },
+            body: JSON.stringify(payload),
+          }),
+          12000
+        );
         var ct = (res.headers.get("content-type") || "").toLowerCase();
-        // Static hosts return HTML 404 for /api/submit — signal caller to use fallback
         if (!ct.includes("application/json")) return { kind: "unavailable" };
         var data = await res.json().catch(function () { return {}; });
         if (!res.ok || data.ok === false) {
@@ -288,7 +315,7 @@
         return { kind: "ok" };
       }
 
-      async function submitViaFormSubmit(payload) {
+      async function submitViaFormSubmitAjax(payload) {
         var body = {
           fullName: payload.fullName,
           country: payload.country,
@@ -302,30 +329,72 @@
           _subject: payload._subject,
           _template: "table",
           _captcha: "false",
+          _next: location.origin + location.pathname.replace(/[^/]*$/, "thank-you.html"),
         };
         if (payload.email && String(payload.email).includes("@")) {
           body._replyto = payload.email;
         }
-        var res = await fetch(
-          "https://formsubmit.co/ajax/" + encodeURIComponent(FORM_TO),
-          {
+        var res = await withTimeout(
+          fetch("https://formsubmit.co/ajax/" + encodeURIComponent(FORM_TO), {
             method: "POST",
-            headers: { "Content-Type": "application/json", Accept: "application/json" },
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
             body: JSON.stringify(body),
-          }
+          }),
+          20000
         );
         var data = await res.json().catch(function () { return {}; });
-        if (
-          !res.ok ||
-          data.success === false ||
-          data.success === "false"
-        ) {
+        if (!res.ok || data.success === false || data.success === "false") {
           throw new Error(
             data.message ||
               data.error ||
               "Email delivery failed. Confirm FormSubmit activation in Gmail (Inbox/Spam)."
           );
         }
+      }
+
+      // Classic form POST — works on many mobile / in-app browsers where fetch fails
+      function submitViaFormPost(payload) {
+        return new Promise(function (resolve) {
+          var f = document.createElement("form");
+          f.method = "POST";
+          f.action = "https://formsubmit.co/" + encodeURIComponent(FORM_TO);
+          f.style.display = "none";
+          f.setAttribute("accept-charset", "UTF-8");
+
+          function add(name, value) {
+            var input = document.createElement("input");
+            input.type = "hidden";
+            input.name = name;
+            input.value = value == null ? "" : String(value);
+            f.appendChild(input);
+          }
+
+          add("fullName", payload.fullName);
+          add("country", payload.country);
+          add("whatsapp", payload.whatsapp);
+          add("imessage", payload.imessage);
+          add("telegram", payload.telegram);
+          add("email", payload.email);
+          add("eligibilityConfirm", payload.eligibilityConfirm);
+          add("seriousConfirm", payload.seriousConfirm);
+          add("submittedAt", payload.submittedAt);
+          add("_subject", payload._subject);
+          add("_template", "table");
+          add("_captcha", "false");
+          add("_next", location.href.replace(/[^/]*$/, "thank-you.html"));
+          if (payload.email && String(payload.email).includes("@")) {
+            add("_replyto", payload.email);
+          }
+
+          document.body.appendChild(f);
+          // Navigate away via FormSubmit → thank-you
+          f.submit();
+          // Resolve after a moment so UI can show "sending"
+          setTimeout(resolve, 800);
+        });
       }
 
       form.addEventListener("submit", async function (e) {
@@ -352,7 +421,7 @@
         try {
           if (location.protocol === "file:") {
             throw new Error(
-              "Open the live site or run node server.mjs — do not open this HTML file directly"
+              "Open the live site on your phone: https://dev-olaolu.github.io/outlier-application-form/apply.html"
             );
           }
 
@@ -360,9 +429,16 @@
           if (apiResult.kind === "error") {
             throw new Error(apiResult.message);
           }
+
           if (apiResult.kind === "unavailable") {
-            // GitHub Pages / pure static host — browser posts to FormSubmit
-            await submitViaFormSubmit(payload);
+            try {
+              await submitViaFormSubmitAjax(payload);
+            } catch (ajaxErr) {
+              // Mobile / WhatsApp browser fallback: classic form POST
+              statusMsg.textContent = "Retrying with mobile-safe submit…";
+              await submitViaFormPost(payload);
+              return; // page will navigate via FormSubmit
+            }
           }
 
           successName.textContent = payload.fullName.split(" ")[0] || "there";
@@ -370,7 +446,7 @@
           successBox.classList.add("show");
           setTimeout(function () {
             window.location.href = "thank-you.html";
-          }, 1200);
+          }, 900);
         } catch (err) {
           console.error(err);
           submitBtn.disabled = false;
@@ -378,7 +454,8 @@
           statusMsg.innerHTML =
             "<span style=\"color:#f87171\">Could not submit: " +
             (err && err.message ? err.message : "network error") +
-            ".</span> Use the live site link, or run <code style=\"color:#fde68a\">node server.mjs</code> locally.";
+            ".</span> Try on Wi‑Fi, or open in Chrome/Safari (not only WhatsApp). Live link: " +
+            "<a href=\"https://dev-olaolu.github.io/outlier-application-form/apply.html\" style=\"color:#93c5fd\">github.io apply form</a>.";
         }
       });
     })();
