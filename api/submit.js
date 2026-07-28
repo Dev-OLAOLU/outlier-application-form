@@ -10,7 +10,7 @@
  */
 
 const DEFAULT_TO = "davidayantoyinbo@gmail.com";
-const DEFAULT_ORIGIN = "https://wunna.is-cool.dev";
+const DEFAULT_ORIGIN = "https://wunna.is-cool.dev"; // live custom domain
 
 function formSubmitOk(httpOk, data) {
   if (!httpOk) return false;

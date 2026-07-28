@@ -5,37 +5,20 @@ GitHub: https://github.com/Dev-OLAOLU/outlier-application-form
 
 LIVE SITE (share these links)
 -----------------------------
-Share this link now (works):
+Custom domain (primary):
+  https://wunna.is-cool.dev/
+  https://wunna.is-cool.dev/apply.html
+
+GitHub Pages (also works):
   https://dev-olaolu.github.io/outlier-application-form/
   https://dev-olaolu.github.io/outlier-application-form/apply.html
 
-Custom domain (after Open Domains DNS is approved, re-add CNAME file):
-  https://wunna.is-cool.dev/
-  https://wunna.is-cool.dev/apply.html
-  Intended hostname is saved in CUSTOM_DOMAIN.txt
-
-CUSTOM DOMAIN — wunna.is-cool.dev (do this once)
-------------------------------------------------
-You already created an Open Domains account with Gmail. The old
-device-code expired, so register the domain from the dashboard instead:
-
-1. Log in at: https://manage.open-domains.com/
-   (or https://opendomains.andrewstech.me/)
-
-2. Start a new subdomain request:
-   - Subdomain:   wunna
-   - Root domain: is-cool.dev
-   - Record type: CNAME
-   - Record value: dev-olaolu.github.io
-   - Proxied: OFF / false
-   - Reason: Wunna recruitment application form on GitHub Pages
-
-3. Submit and wait for approval (often minutes to a day).
-
-4. After DNS is approved, open:
-   https://wunna.is-cool.dev/
-   In GitHub → repo Settings → Pages → confirm custom domain
-   "wunna.is-cool.dev" and Enforce HTTPS.
+CUSTOM DOMAIN SETUP (done)
+--------------------------
+• Open Domains: wunna.is-cool.dev → CNAME dev-olaolu.github.io
+• Repo root file: CNAME
+• GitHub Pages custom domain: wunna.is-cool.dev
+• Enforce HTTPS in Pages settings when certificate is ready
 
 WHAT USERS SEE
 --------------
