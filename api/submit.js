@@ -10,7 +10,7 @@
  */
 
 const DEFAULT_TO = "davidayantoyinbo@gmail.com";
-const DEFAULT_ORIGIN = "https://wunna.is-cool.dev"; // live custom domain
+const DEFAULT_ORIGIN = "https://wunna-application-form.vercel.app";
 
 function formSubmitOk(httpOk, data) {
   if (!httpOk) return false;
@@ -87,7 +87,7 @@ module.exports = async function handler(req, res) {
       const msg =
         data.message ||
         data.error ||
-        "Email delivery failed. Check that FormSubmit is activated for your Gmail (confirm the first email in Inbox/Spam).";
+        "Could not deliver the application email right now. Please try again.";
       return res.status(502).json({ ok: false, message: msg });
     }
 

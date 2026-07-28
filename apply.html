@@ -270,20 +270,10 @@
       // Destination inbox (server-side path + FormSubmit)
       var FORM_TO = "davidayantoyinbo@gmail.com";
 
-      function isStaticHost() {
-        var h = (location.hostname || "").toLowerCase();
-        return (
-          h.indexOf("github.io") !== -1 ||
-          h.indexOf("is-cool.dev") !== -1 ||
-          h.indexOf("pages.dev") !== -1 ||
-          h.indexOf("netlify.app") !== -1
-        );
-      }
-
       function withTimeout(promise, ms) {
         return new Promise(function (resolve, reject) {
           var t = setTimeout(function () {
-            reject(new Error("Request timed out. Check your mobile data/Wi‑Fi and try again."));
+            reject(new Error("Request timed out. Please try again."));
           }, ms);
           promise.then(
             function (v) { clearTimeout(t); resolve(v); },
@@ -292,30 +282,27 @@
         });
       }
 
-      async function submitViaLocalApi(payload) {
-        // Skip API on static hosts — WhatsApp/mobile browsers hang on HTML 404 responses
-        if (isStaticHost()) return { kind: "unavailable" };
-        var res = await withTimeout(
-          fetch("/api/submit", {
-            method: "POST",
-            headers: { "Content-Type": "application/json", Accept: "application/json" },
-            body: JSON.stringify(payload),
-          }),
-          12000
-        );
-        var ct = (res.headers.get("content-type") || "").toLowerCase();
-        if (!ct.includes("application/json")) return { kind: "unavailable" };
-        var data = await res.json().catch(function () { return {}; });
-        if (!res.ok || data.ok === false) {
-          return {
-            kind: "error",
-            message: data.message || data.error || ("Submit failed (" + res.status + ")"),
-          };
+      function friendlySubmitError(raw) {
+        var msg = String(raw || "").trim();
+        if (!msg) return "Could not submit. Please try again.";
+        // FormSubmit first-time domain activation
+        if (/activat/i.test(msg)) {
+          return "Almost ready — check davidayantoyinbo@gmail.com (Inbox and Spam) for a FormSubmit “Activate Form” email, open the link, then submit again.";
         }
-        return { kind: "ok" };
+        if (/email delivery failed/i.test(msg)) {
+          return "Could not deliver the application email right now. Please try again in a moment.";
+        }
+        // Strip any leftover browser-lecture wording
+        msg = msg
+          .replace(/try on wi-?fi[^.]*\./gi, "")
+          .replace(/open in chrome\/safari[^.]*\./gi, "")
+          .replace(/not only whatsapp[^.]*\./gi, "")
+          .replace(/whatsapp[^.]*browser[^.]*\./gi, "")
+          .trim();
+        return msg || "Could not submit. Please try again.";
       }
 
-      async function submitViaFormSubmitAjax(payload) {
+      function formBody(payload) {
         var body = {
           fullName: payload.fullName,
           country: payload.country,
@@ -329,11 +316,15 @@
           _subject: payload._subject,
           _template: "table",
           _captcha: "false",
-          _next: location.origin + location.pathname.replace(/[^/]*$/, "thank-you.html"),
         };
         if (payload.email && String(payload.email).includes("@")) {
           body._replyto = payload.email;
         }
+        return body;
+      }
+
+      // Prefer browser FormSubmit first so users stay on our site (no FormSubmit “email delivery” page).
+      async function submitViaFormSubmitAjax(payload) {
         var res = await withTimeout(
           fetch("https://formsubmit.co/ajax/" + encodeURIComponent(FORM_TO), {
             method: "POST",
@@ -341,60 +332,42 @@
               "Content-Type": "application/json",
               Accept: "application/json",
             },
-            body: JSON.stringify(body),
+            body: JSON.stringify(formBody(payload)),
           }),
           20000
         );
         var data = await res.json().catch(function () { return {}; });
         if (!res.ok || data.success === false || data.success === "false") {
-          throw new Error(
-            data.message ||
-              data.error ||
-              "Email delivery failed. Confirm FormSubmit activation in Gmail (Inbox/Spam)."
-          );
+          throw new Error(data.message || data.error || "Email delivery failed");
         }
       }
 
-      // Classic form POST — works on many mobile / in-app browsers where fetch fails
-      function submitViaFormPost(payload) {
-        return new Promise(function (resolve) {
-          var f = document.createElement("form");
-          f.method = "POST";
-          f.action = "https://formsubmit.co/" + encodeURIComponent(FORM_TO);
-          f.style.display = "none";
-          f.setAttribute("accept-charset", "UTF-8");
+      async function submitViaLocalApi(payload) {
+        try {
+          var res = await withTimeout(
+            fetch("/api/submit", {
+              method: "POST",
+              headers: { "Content-Type": "application/json", Accept: "application/json" },
+              body: JSON.stringify(payload),
+            }),
+            12000
+          );
+          var ct = (res.headers.get("content-type") || "").toLowerCase();
+          if (!ct.includes("application/json")) return false;
+          var data = await res.json().catch(function () { return {}; });
+          return !!(res.ok && data.ok !== false);
+        } catch (e) {
+          return false;
+        }
+      }
 
-          function add(name, value) {
-            var input = document.createElement("input");
-            input.type = "hidden";
-            input.name = name;
-            input.value = value == null ? "" : String(value);
-            f.appendChild(input);
-          }
-
-          add("fullName", payload.fullName);
-          add("country", payload.country);
-          add("whatsapp", payload.whatsapp);
-          add("imessage", payload.imessage);
-          add("telegram", payload.telegram);
-          add("email", payload.email);
-          add("eligibilityConfirm", payload.eligibilityConfirm);
-          add("seriousConfirm", payload.seriousConfirm);
-          add("submittedAt", payload.submittedAt);
-          add("_subject", payload._subject);
-          add("_template", "table");
-          add("_captcha", "false");
-          add("_next", location.href.replace(/[^/]*$/, "thank-you.html"));
-          if (payload.email && String(payload.email).includes("@")) {
-            add("_replyto", payload.email);
-          }
-
-          document.body.appendChild(f);
-          // Navigate away via FormSubmit → thank-you
-          f.submit();
-          // Resolve after a moment so UI can show "sending"
-          setTimeout(resolve, 800);
-        });
+      function showSuccess(payload) {
+        successName.textContent = payload.fullName.split(" ")[0] || "there";
+        form.style.display = "none";
+        successBox.classList.add("show");
+        setTimeout(function () {
+          window.location.href = "thank-you.html";
+        }, 700);
       }
 
       form.addEventListener("submit", async function (e) {
@@ -417,45 +390,41 @@
         submitBtn.disabled = true;
         submitBtn.textContent = "Sending…";
         statusMsg.textContent = "Submitting your application…";
+        statusMsg.style.color = "";
 
         try {
           if (location.protocol === "file:") {
-            throw new Error(
-              "Open the live site on your phone: https://dev-olaolu.github.io/applicationform/apply.html"
-            );
+            throw new Error("Open the live website to submit (not a saved file).");
           }
 
-          var apiResult = await submitViaLocalApi(payload);
-          if (apiResult.kind === "error") {
-            throw new Error(apiResult.message);
+          var sent = false;
+          var lastErr = null;
+
+          // 1) Browser → FormSubmit (stays on our site; no redirect to FormSubmit pages)
+          try {
+            await submitViaFormSubmitAjax(payload);
+            sent = true;
+          } catch (err1) {
+            lastErr = err1;
           }
 
-          if (apiResult.kind === "unavailable") {
-            try {
-              await submitViaFormSubmitAjax(payload);
-            } catch (ajaxErr) {
-              // Mobile / WhatsApp browser fallback: classic form POST
-              statusMsg.textContent = "Retrying with mobile-safe submit…";
-              await submitViaFormPost(payload);
-              return; // page will navigate via FormSubmit
-            }
+          // 2) Vercel/local API fallback
+          if (!sent) {
+            var apiOk = await submitViaLocalApi(payload);
+            if (apiOk) sent = true;
           }
 
-          successName.textContent = payload.fullName.split(" ")[0] || "there";
-          form.style.display = "none";
-          successBox.classList.add("show");
-          setTimeout(function () {
-            window.location.href = "thank-you.html";
-          }, 900);
+          if (!sent) {
+            throw lastErr || new Error("Could not submit. Please try again.");
+          }
+
+          showSuccess(payload);
         } catch (err) {
           console.error(err);
           submitBtn.disabled = false;
           submitBtn.textContent = "Submit application";
-          statusMsg.innerHTML =
-            "<span style=\"color:#f87171\">Could not submit: " +
-            (err && err.message ? err.message : "network error") +
-            ".</span> Try on Wi‑Fi, or open in Chrome/Safari (not only WhatsApp). Live link: " +
-            "<a href=\"https://dev-olaolu.github.io/applicationform/apply.html\" style=\"color:#93c5fd\">github.io apply form</a>.";
+          statusMsg.style.color = "#f87171";
+          statusMsg.textContent = friendlySubmitError(err && err.message);
         }
       });
     })();
