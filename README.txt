@@ -5,14 +5,14 @@ GitHub: https://github.com/Dev-OLAOLU/applicationform
 
 SHARE THESE LINKS (works on phones worldwide)
 ---------------------------------------------
-Short link (main share — free TinyURL):
-  https://tinyurl.com/245kzhgr
+Short link (main share — opens HOME first):
+  https://da.gd/8nGZv
+
+Home (full URL):
+  https://dev-olaolu.github.io/applicationform/
 
 Apply form (full URL):
   https://dev-olaolu.github.io/applicationform/apply.html
-
-Home:
-  https://dev-olaolu.github.io/applicationform/
 
 Why not only wunna.is-cool.dev?
   Some mobile networks (especially LTE in some countries) cannot resolve
@@ -31,7 +31,7 @@ WHAT WAS FIXED (28 Jul 2026)
    - request timeouts
    - classic form POST fallback if fetch fails
 4. Repo renamed to applicationform (cleaner URL).
-5. Free short link: https://tinyurl.com/245kzhgr
+5. Free short link (home page): https://da.gd/8nGZv
 
 WHERE EMAIL GOES
 ----------------
